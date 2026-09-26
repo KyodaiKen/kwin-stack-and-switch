@@ -1,0 +1,18 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Your Name",
+                "Email": "your.email@example.com"
+            }
+        ],
+        "Description": "Snap windows to matching geometries and cycle focus through overlapping window stacks.",
+        "Icon": "preferences-system-windows-script-test",
+        "Id": "kwin-stack-and-switch",
+        "License": "GPL-3.0-or-later",
+        "Name": "Stack & Switch",
+        "Version": "1.0.0"
+    },
+    "X-Plasma-API": "javascript"
+}
