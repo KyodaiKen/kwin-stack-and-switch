@@ -4,6 +4,8 @@ A lightweight KWin 6 script for KDE Plasma 6 that adds manual window stacking, g
 
 It lets you snap floating windows into identical screen positions, keep their move and resize operations synced, and cycle focus strictly within the stack without opening system-wide `Alt+Tab` overlays.
 
+It is basically simulating the stacked tabbed window experience on [Haiku](https://github.com/haiku/haiku), but without tabs and instead relying on keyboard shortcuts.
+
 ## Requirements
 
 * KDE Plasma 6.x
@@ -31,7 +33,7 @@ tar -czvf kwin-stack-and-switch.tar.gz metadata.json contents/
 # Install and enable
 kpackagetool6 --type=KWin/Script -i kwin-stack-and-switch.tar.gz
 kwriteconfig6 --file kwinrc --group Plugins --key kwin-stack-and-switchEnabled true
-qdbus6 org.kde.KWin /KWin reconfigure
+qdbus-qt6 org.kde.KWin /KWin reconfigure
 ```
 
 ## Keybindings
@@ -51,18 +53,6 @@ The default bindings make sense on a German layout keyboard. :)
 * **Focus Cycling:** Filters `workspace.windowList()` for normal windows within a 15px pixel tolerance of the active window, ignoring all unrelated open applications.
 * **Detaching:** Modifies the target window's coordinates past the match tolerance, allowing independent movement again.
 
-## Project Structure
-
-```text
-kwin-stack-and-switch/
-├── contents/
-│   └── code/
-│       └── main.js
-├── install.sh
-├── metadata.json
-└── kwin-stack-and-switch.tar.gz
-```
-
 ## License
 
-GPL-3.0-or-later
+MIT
