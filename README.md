@@ -38,11 +38,12 @@ qdbus6 org.kde.KWin /KWin reconfigure
 
 | Action | Default Shortcut | Description |
 | --- | --- | --- |
-| **Snap to Window Below** | `Meta + >` | Matches active window geometry to the window directly underneath it. |
-| **Cycle Focus in Stack** | `Meta + <` | Cycles focus through windows sharing the current window's position. |
-| **Detach from Stack** | `Meta + Shift + U` | Offsets active window by 40px to un-sync it from the stack. |
+| **Stack & Switch - Snap Active Window to Window Underneath** | `Meta + >` | Matches active window geometry to the window directly underneath it. |
+| **Stack & Switch - Cycle Focus in Current Stack** | `Meta + <` | Cycles focus through windows sharing the current window's position. |
+| **Stack & Switch - Detach Active Window from Stack** | `Meta + Y` | Detatches active window by offsetting it by 40px to un-sync it from the stack. |
 
 Keybindings can be customized in **System Settings → Keyboard → Shortcuts → KWin**.
+The default bindings make sense on a German layout keyboard. :)
 
 ## How It Works
 

@@ -16,6 +16,6 @@ tar -czvf "${PACKAGE_NAME}.tar.gz" -C src .
 echo "Bundling ${PACKAGE_NAME}.zip using 7z..."
 
 # Create a zip archive (-tzip) containing the .tar.gz file and install.sh
-7z a -tzip "${PACKAGE_NAME}.zip" "${PACKAGE_NAME}.tar.gz" install.sh
+7z a -tzip "${PACKAGE_NAME}.zip" "${PACKAGE_NAME}.tar.gz" install.sh README.md
 
 echo "Package successfully created: ${PACKAGE_NAME}.zip"

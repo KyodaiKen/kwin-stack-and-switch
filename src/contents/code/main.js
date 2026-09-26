@@ -127,8 +127,8 @@ workspace.windowRemoved.connect(unregisterWindow);
 
 // Shortcut 1: Snap Active Window to Window Underneath
 registerShortcut(
-    "SnapToWindowBelow",
-    "Snap Active Window to Window Underneath",
+    "stack_switch_snap",
+    "Stack & Switch - Snap Active Window to Window Underneath",
     "Meta+>",
     function () {
         var stacking = workspace.stackingOrder;
@@ -149,8 +149,8 @@ registerShortcut(
 
 // Shortcut 2: Cycle Focus in Current Stack
 registerShortcut(
-    "CycleStackedWindows",
-    "Cycle Focus in Current Stack",
+    "stack_switch_cycle",
+    "Stack & Switch - Cycle Focus in Current Stack",
     "Meta+<",
     function () {
         var active = workspace.activeWindow;
@@ -180,9 +180,9 @@ registerShortcut(
 
 // Shortcut 3: Detach Active Window from Stack
 registerShortcut(
-    "DetachStackedWindow",
-    "Detach Active Window from Stack",
-    "Meta+Shift+U",
+    "stack_switch_detach",
+    "Stack & Switch - Detach Active Window from Stack",
+    "Meta+Y",
     function () {
         var active = workspace.activeWindow;
         if (!active) {
