@@ -47,6 +47,56 @@ function copyGeometry(geom) {
 }
 
 /**
+ * Validates whether two windows inhabit the same monitor and virtual desktop context.
+ * Excludes non-normal windows, off-screen windows, and windows on different virtual desktops.
+ *
+ * @param {Window} win1 First target window.
+ * @param {Window} win2 Second target window.
+ * @returns {boolean} True if windows share the same screen output and virtual desktop.
+ */
+function canStackWith(win1, win2) {
+    if (!win1 || !win2 || win1 === win2) {
+        return false;
+    }
+
+    if (!win1.normalWindow || !win2.normalWindow) {
+        return false;
+    }
+
+    // 1. Output/Monitor Check
+    if (win1.output && win2.output && win1.output !== win2.output) {
+        if (win1.output.name && win2.output.name && win1.output.name !== win2.output.name) {
+            return false;
+        }
+    }
+
+    // 2. Virtual Desktop Check (ignore if either window is pinned to all desktops)
+    if (!win1.onAllDesktops && !win2.onAllDesktops) {
+        var d1 = win1.desktops || [];
+        var d2 = win2.desktops || [];
+        var sharedDesktop = false;
+
+        for (var i = 0; i < d1.length; i++) {
+            for (var j = 0; j < d2.length; j++) {
+                if (d1[i] === d2[j] || (d1[i].id && d1[i].id === d2[j].id)) {
+                    sharedDesktop = true;
+                    break;
+                }
+            }
+            if (sharedDesktop) {
+                break;
+            }
+        }
+
+        if (!sharedDesktop) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
  * Handler triggered whenever a window's position or dimensions change.
  *
  * @param {Window} win The window emitting the event.
@@ -71,11 +121,11 @@ function onGeometryChanged(win) {
 
     isSyncing = true;
 
-    // Find all windows that matched the previous stack geometry and update them
+    // Find all windows matching the previous stack geometry on the same output/desktop
     var allWindows = workspace.windowList();
     for (var i = 0; i < allWindows.length; i++) {
         var other = allWindows[i];
-        if (other !== win && other.normalWindow) {
+        if (canStackWith(win, other)) {
             var otherOldGeom = lastGeometries.get(other) || other.frameGeometry;
             if (isSameStack(oldGeom, otherOldGeom, 15)) {
                 other.frameGeometry = newGeom;
@@ -139,10 +189,15 @@ registerShortcut(
         }
 
         var currentIndex = stacking.indexOf(active);
-        if (currentIndex > 0) {
-            var targetWindow = stacking[currentIndex - 1];
-            active.frameGeometry = targetWindow.frameGeometry;
-            lastGeometries.set(active, copyGeometry(targetWindow.frameGeometry));
+
+        // Find the top-most window directly underneath the active window on the same screen/desktop
+        for (var i = currentIndex - 1; i >= 0; i--) {
+            var candidate = stacking[i];
+            if (canStackWith(active, candidate)) {
+                active.frameGeometry = candidate.frameGeometry;
+                lastGeometries.set(active, copyGeometry(candidate.frameGeometry));
+                break;
+            }
         }
     }
 );
@@ -163,7 +218,7 @@ registerShortcut(
 
         for (var i = 0; i < allWindows.length; i++) {
             var win = allWindows[i];
-            if (win.normalWindow && isSameStack(active.frameGeometry, win.frameGeometry)) {
+            if (win === active || (canStackWith(active, win) && isSameStack(active.frameGeometry, win.frameGeometry))) {
                 stackedSet.push(win);
             }
         }

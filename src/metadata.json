@@ -3,8 +3,8 @@
     "KPlugin": {
         "Authors": [
             {
-                "Name": "Your Name",
-                "Email": "your.email@example.com"
+                "Name": "Kyoudai Ken",
+                "Email": "none@example.com"
             }
         ],
         "Description": "Snap windows to matching geometries and cycle focus through overlapping window stacks.",
