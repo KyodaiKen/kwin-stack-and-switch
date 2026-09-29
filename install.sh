@@ -17,6 +17,7 @@ fi
 echo "Installing ${PACKAGE_ID} from archive..."
 
 # Remove prior registration if present to prevent upgrade lookup bugs
+qdbus-qt6 org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript "kwin-stack-and-switch" &>/dev/null || true
 kpackagetool6 --type=KWin/Script -r "${PACKAGE_ID}" &>/dev/null || true
 
 # Install cleanly from the .tar.gz archive
@@ -24,17 +25,7 @@ kpackagetool6 --type=KWin/Script -i "${PACKAGE_FILE}"
 
 # Enable plugin in kwinrc configuration
 kwriteconfig6 --file kwinrc --group Plugins --key "${PACKAGE_ID}Enabled" true
-
-# Detect available DBus binary in Plasma 6
-if command -v qdbus6 &>/dev/null; then
-    qdbus6 org.kde.KWin /KWin reconfigure
-elif command -v qdbus-qt6 &>/dev/null; then
-    qdbus-qt6 org.kde.KWin /KWin reconfigure
-elif command -v qdbus &>/dev/null; then
-    qdbus org.kde.KWin /KWin reconfigure
-else
-    busctl --user call org.kde.KWin /KWin org.kde.KWin reconfigure
-fi
+qdbus-qt6 org.kde.KWin /KWin reconfigure
 
 echo "Installation complete!"
 echo "Shortcuts available under: System Settings -> Keyboard -> Shortcuts -> Window Management"
